@@ -1,16 +1,17 @@
 from getSimilar import DTWSimilar
-from getStockDataset import getDataset
-import pandas as pd
+from getSimilar import CorrSimilar
+from getSimilar import aHashSimilar
+from getStockDataset import getOracleDataset
+from getIndex import getFibnacciIndex
 
 stockid = '2330'
-filepath = '..//data_source'
 base_start_date = '2020-10-01'
 base_end_date = '2020-12-31'
 
 hostname = r'172.16.241.27'
 port = r'1521'
 servicename = r'TFMGDM'
-id = r'fmgdm'
+id = r'fmgods_extl'
 passwd = r'Fubon#123'
 sqlstr = r'''
 select 
@@ -18,6 +19,12 @@ select
 from v_ODS_CMNY_M002 where 股票代號 = :stockid
 '''
 
-dataset_2330 = getDataset.getOracleDataset(hostname,port,servicename,id,passwd,sqlstr,stockid)
-columns = ['datetime','ID','name','close','open','high','low','vol']
-dataset_2330 = pd.DataFrame(dataset_2330,columns=columns)
+dataset = getOracleDataset.getOracleDataset(hostname,port,servicename,id,passwd,sqlstr,stockid)
+
+DTWSimilar_rank = DTWSimilar.getDTWrank(dataset,base_start_date,base_end_date)
+
+CorrSimilar_rank = CorrSimilar.getCorrRank(dataset,base_start_date,base_end_date)
+
+aHashSimilar_rank = aHashSimilar.getaHashRank(dataset,base_start_date,base_end_date)
+
+fibnacci = getFibnacciIndex.fibnacci(dataset,base_start_date,base_end_date)
