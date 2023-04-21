@@ -61,6 +61,13 @@ calss SSIMSimilar:
         def getBaseabs(dataset,df_window_name):
             base_abs = round(dataset.iat[0,0] - df_window_name.iat[0,0],2)
             return base_abs
+        
+        ##準備compare視窗的數據(起點切齊)
+        start_rownum = dataset[:base_start_date].shape[0]
+        s_num = start_rownum-window_size
+        e_num = start_rownum
+
+        df_compare_abs = pd.DataFrame()
     
     
     
