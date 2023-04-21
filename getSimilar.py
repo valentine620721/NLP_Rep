@@ -79,6 +79,26 @@ calss SSIMSimilar:
             low_compare_abs = pd.DataFrame(df_compare['low']) + base_abs
             #vol_compare = df_compare['vol']
             df_compare_abs = pd.concat([close_compare_abs,open_compare_abs,high_compare_abs,low_compare_abs],join = 'outer',axis = 1)
+            
+            ##繪製compare window K線圖
+            df_compare_abs['Date_num'] = list(map(lambda x:mdates.date2num(x),df_compare_abs.index))
+            fig = plt.figure(figsize=(10,10))
+            grid = plt.GridSpec(10, 10, wspace=0.5, hspace=0.5)
+            ohlc = df_compare_abs[['Date_num','open','high','low','close']].astype(float)
+            ohlc.loc[:,'Date_num'] = range(len(ohlc))  
+            #繪製K線
+            ax1 = fig.add_subplot(grid[0:8,0:12])   ##繪製K線尺寸
+            candlestick_ohlc(ax1,ohlc.values.tolist(),width = .7,colorup='red',colordown='green')
+            ax1 = plt.gca()
+            ax1.axes.xaxis.set_visible(False)
+            ax1.axes.yaxis.set_visible(False)
+
+            s_idx = df_compare_abs.index[0]
+            e_idx = df_compare_abs.index[window_size-1]
+            s_idx = pd.to_datetime(s_idx,format= '%Y-%m-%d')
+            e_idx = pd.to_datetime(e_idx,format= '%Y-%m-%d')
+            plt.savefig('windowimg_result//'+str(s_idx.date())+'_'+str(e_idx.date())+'.png')
+            plt.close()
     
     
     
