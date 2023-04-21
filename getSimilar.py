@@ -68,6 +68,17 @@ calss SSIMSimilar:
         e_num = start_rownum
 
         df_compare_abs = pd.DataFrame()
+        for n in range(1,math.floor(start_rownum/window_size)):
+            ## prepare drawing dataset by window size
+            df_compare = dataset[s_num:e_num]
+            close_compare_abs = Transform_ABS(pd.DataFrame(base_period_df['close']),pd.DataFrame(df_compare['close']))
+            ##取得收盤價的abs值
+            base_abs = getBaseabs(pd.DataFrame(base_period_df['close']),pd.DataFrame(df_compare['close']))
+            open_compare_abs = pd.DataFrame(df_compare['open']) + base_abs
+            high_compare_abs = pd.DataFrame(df_compare['high']) + base_abs
+            low_compare_abs = pd.DataFrame(df_compare['low']) + base_abs
+            #vol_compare = df_compare['vol']
+            df_compare_abs = pd.concat([close_compare_abs,open_compare_abs,high_compare_abs,low_compare_abs],join = 'outer',axis = 1)
     
     
     
