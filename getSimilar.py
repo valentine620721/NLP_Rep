@@ -4,6 +4,7 @@ import math
 import time
 import datetime
 import os
+import cv2
 from dtaidistance import dtw
 from dtaidistance import dtw_visualisation as dtwvis
 
