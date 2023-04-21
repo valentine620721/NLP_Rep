@@ -144,6 +144,8 @@ calss SSIMSimilar:
                 strength = "M"
             else:
                 strength = "L"
+               
+            start_date = datetime.datetime.strptime(start_date,'%Y-%m-%d').date()
     
     
     
