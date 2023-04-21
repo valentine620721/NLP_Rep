@@ -99,6 +99,30 @@ calss SSIMSimilar:
             e_idx = pd.to_datetime(e_idx,format= '%Y-%m-%d')
             plt.savefig('windowimg_result//'+str(s_idx.date())+'_'+str(e_idx.date())+'.png')
             plt.close()
+            
+            n += 1
+            s_num = s_num - window_size
+            e_num = e_num - window_size
+
+        ## 定義SSIM函式
+        def ssim(img1, img2):
+            # 計算圖像的亮度、對比度和結構
+            c1 = (0.01 * 255) ** 2
+            c2 = (0.03 * 255) ** 2
+            img1 = img1.astype(np.float64)
+            img2 = img2.astype(np.float64)
+            mu1 = cv2.GaussianBlur(img1, (11, 11), 1.5)
+            mu2 = cv2.GaussianBlur(img2, (11, 11), 1.5)
+            mu1_sq = mu1 ** 2
+            mu2_sq = mu2 ** 2
+            mu1_mu2 = mu1 * mu2
+            sigma1_sq = cv2.GaussianBlur(img1 ** 2, (11, 11), 1.5) - mu1_sq
+            sigma2_sq = cv2.GaussianBlur(img2 ** 2, (11, 11), 1.5) - mu2_sq
+            sigma12 = cv2.GaussianBlur(img1 * img2, (11, 11), 1.5) - mu1_mu2
+
+            # 計算SSIM指標
+            ssim_map = ((2 * mu1_mu2 + c1) * (2 * sigma12 + c2)) / ((mu1_sq + mu2_sq + c1) * (sigma1_sq + sigma2_sq + c2))
+            return np.mean(ssim_map)
     
     
     
