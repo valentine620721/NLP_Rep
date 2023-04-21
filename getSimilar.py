@@ -30,6 +30,22 @@ calss SSIMSimilar:
         window_size = len(base_period_df)
         ##移動步=window_size * 1/2
         move_step = round(window_size*1/2)
+        
+        ##基準區間K線圖
+        base_period_df['Date_num'] = list(map(lambda x:mdates.date2num(x),base_period_df.index))
+        ##繪製K線圖
+        fig = plt.figure(figsize=(10,10))
+        grid = plt.GridSpec(10, 10, wspace=0.5, hspace=0.5)
+        ohlc = base_period_df[['Date_num','open','high','low','close']].astype(float)
+        ohlc.loc[:,'Date_num'] = range(len(ohlc))  
+        ax1 = fig.add_subplot(grid[0:8,0:12])
+        candlestick_ohlc(ax1,ohlc.values.tolist(),width = .7,colorup='red',colordown='green')
+        ax1 = plt.gca()
+        ax1.axes.xaxis.set_visible(False)
+        ax1.axes.yaxis.set_visible(False)
+
+        plt.savefig('baseimg_result//'+'base.png')
+        plt.close()
     
     
     
