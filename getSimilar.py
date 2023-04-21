@@ -8,7 +8,9 @@ import cv2
 from dtaidistance import dtw
 from dtaidistance import dtw_visualisation as dtwvis
 
-calss SSIM:
+calss SSIMSimilar:
+    def __init__(self,dataset,base_start_date,base_end_date):
+        pass
 
 class DTWSimilar:
     def __init__(self):
