@@ -20,6 +20,16 @@ calss SSIMSimilar:
             os.remove(os.path.join(base_path,f))     
         for f in os.listdir(window_path):
             os.remove(os.path.join(window_path,f))
+        
+        dataset = dataset.sort_index() 
+        dataset = dataset[['close','open','high','low']]
+        base_start_date = datetime.datetime.strptime(base_start_date,'%Y-%m-%d').date()
+        base_end_date   = datetime.datetime.strptime(base_end_date,'%Y-%m-%d').date()
+
+        base_period_df = dataset[base_start_date:base_end_date]
+        window_size = len(base_period_df)
+        ##移動步=window_size * 1/2
+        move_step = round(window_size*1/2)
     
     
     
