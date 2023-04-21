@@ -123,6 +123,27 @@ calss SSIMSimilar:
             # 計算SSIM指標
             ssim_map = ((2 * mu1_mu2 + c1) * (2 * sigma12 + c2)) / ((mu1_sq + mu2_sq + c1) * (sigma1_sq + sigma2_sq + c2))
             return np.mean(ssim_map)
+        
+        ##進行圖片SSIM比對
+        base_filepath = 'baseimg_result'
+        compare_filepath = 'windowimg_result'
+        ##讀取base、compare圖片
+        base_img = cv2.imread('baseimg_result//base.png',cv2.IMREAD_GRAYSCALE)
+
+        SSIM_rank = {'start_date':[],'end_date':[],'similar':[],'strength':[]}
+        img_list = os.listdir(compare_filepath)
+        for img in img_list:
+            start_date = img.split('_')[0]
+            end_date_ext = img.split('_')[1]
+            end_date = end_date_ext.split('.')[0]
+            compare_img = cv2.imread(compare_filepath+'//'+img,cv2.IMREAD_GRAYSCALE)
+            ssim_value = ssim(base_img, compare_img)
+            if ssim_value >= 0.92:
+                strength = "H" 
+            elif ssim_value >= 0.9 and ssim_value<0.92:
+                strength = "M"
+            else:
+                strength = "L"
     
     
     
