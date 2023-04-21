@@ -11,6 +11,18 @@ from dtaidistance import dtw_visualisation as dtwvis
 calss SSIMSimilar:
     def __init__(self,dataset,base_start_date,base_end_date):
         pass
+    
+    def getSSIMRank(dataset,base_start_date,base_end_date):
+        ##del old img
+        base_path = 'baseimg_result//'
+        window_path = 'windowimg_result//'
+        for f in os.listdir(base_path):
+            os.remove(os.path.join(base_path,f))     
+        for f in os.listdir(window_path):
+            os.remove(os.path.join(window_path,f))
+    
+    
+    
 
 class DTWSimilar:
     def __init__(self):
