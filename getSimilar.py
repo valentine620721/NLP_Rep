@@ -46,6 +46,21 @@ calss SSIMSimilar:
 
         plt.savefig('baseimg_result//'+'base.png')
         plt.close()
+        
+        ##定義兩個區間第一個收盤價的差，並做比較區間的ABS轉換
+        def Transform_ABS(dataset,df_window_name):
+            base_abs = round(abs(dataset.iat[0,0] - df_window_name.iat[0,0]),2)
+            if dataset.iat[0,0] > df_window_name.iat[0,0]:
+                df_window_name_abs = df_window_name + base_abs 
+            elif dataset.iat[0,0] < df_window_name.iat[0,0]:
+                df_window_name_abs = df_window_name - base_abs
+            else:
+                df_window_name_abs = df_window_name
+            return df_window_name_abs
+
+        def getBaseabs(dataset,df_window_name):
+            base_abs = round(dataset.iat[0,0] - df_window_name.iat[0,0],2)
+            return base_abs
     
     
     
