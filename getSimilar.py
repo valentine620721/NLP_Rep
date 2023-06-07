@@ -5,9 +5,16 @@ import time
 import datetime
 import os
 import cv2
+import talib
 from dtaidistance import dtw
 from dtaidistance import dtw_visualisation as dtwvis
+import matplotlib
+matplotlib.use('agg') ##For webserver render, Must be before importing matplotlib.pyplot or pylab
+import matplotlib.dates as mdates
+import matplotlib.pyplot as plt
+from mpl_finance import candlestick_ohlc
 
+'''Get SSIM Similar Rank...'''
 calss SSIMSimilar:
     def __init__(self,dataset,base_start_date,base_end_date):
         pass
@@ -148,31 +155,13 @@ calss SSIMSimilar:
             start_date = datetime.datetime.strptime(start_date,'%Y-%m-%d').date()
     
     
-    
+'''Get DTW Similar Rank...'''    
 
 class DTWSimilar:
-    def __init__(self):
-        pass
-
-    def getDtwDataset(stockid,filepath):
-        name = os.listdir(filepath)[0]
-        ext = name.split('.')[1]
-        if ext == 'csv':
-            dataset = pd.read_csv(filepath+'//'+stockid+'.csv',delimiter=',')
-        elif ext == 'xls':
-            dataset = pd.read_excel(filepath+'//'+stockid+'.xls')
-        elif ext == 'xlsx':
-            dataset = pd.read_excel(filepath+'//'+stockid+'.xlsx')
-        dataset = dataset[['date','close']]
-        dataset = dataset.astype({'date':str,'close':float})
-        dataset['date'] = pd.to_datetime(dataset['date'],format='%Y%m%d')
-        dataset.set_index(['date'],inplace=True)
-        return dataset
-    
-    
+    def __init__(self,dataset,base_start_date,base_end_date):
+        pass    
 
     def getDTWrank(dataset,base_start_date,base_end_date):
-        
         ##定義base與predict兩個區間第一個收盤價的差，並做比較區間的ABS
         def Transform_ABS(df,df_window_name):
             base_abs = round(abs(df.iat[0,0] - df_window_name.iat[0,0]),2)
@@ -220,7 +209,7 @@ class DTWSimilar:
 
 
 
-
+'''Get Corr Similar Rank...'''
 
 class CorrSimilar:
     def __init__(self):
