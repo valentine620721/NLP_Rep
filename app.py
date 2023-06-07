@@ -82,7 +82,43 @@ def run_similar():
     results.extend(aHashSimilar.getaHashrank(dataset,startdate,enddate).to_dict(orients = 'records'))
   return results
 
+@app.route("/news")
+def get_news():
+  stockid = request.args.get('stockid')
+  startdate = request.args.get('startdate')
+  enddate = request.args.get('enddate')
+  if (stockis is None or startdate is None or enddate is None):
+    return 'params not found',400
+  
+  dataset = get_news_dataset(stockid,startdate,enddate)
+  if (dataset is None or len(dataset) == 0):
+    return 'data not found',404
+  #轉換日期格式
+  convert_date(dataset,'datetime','%Y-%m-%d %H:%H:%S')
+  return dataset.to_dict(orient = 'records')
 
+@app.route("/fibnacci")
+def get_fibnacci():
+  stockid = request.args.get('stockid')
+  startdate = request.args,get('startdate')
+  enddate = request.args.get('enddate')
+  if (stockis is None or startdate is None or enddate is None):
+    return 'params is required',400
+  
+  dataset = get_dataset(stockid,None)
+  if (dataset is None or len(dataset) ==0):
+    return 'data not found',404
+  
+  fibnacci = getFibnacciIndex.fibnacci(dataset,startdate,enddate)
+  return list(fibnacci)
+
+@app.after_request
+def after_request(response):
+  response.access_control_allow_origin = "*"
+  return response
+
+if __name =="__main__":
+  app.run(debug = False,host = 0.0.0.0 , port = 5001)
   
 
 
