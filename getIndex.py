@@ -2,24 +2,18 @@
 import numpy as np
 import pandas as pd
 import datetime
-from getStockDataset import getOracleDataset
-
-## 定義參數
-base_start_date = '2020-10-01'
-base_end_date = '2020-12-31'
-
 
 class getFibnacciIndex:
     def __init__(self,dataset,base_start_date,base_end_date):
         pass
 
 ##定義斐波函數(含上升或下降)
-    def fibnacci(df,start_date,end_date):
+    def fibnacci(dataset,base_start_date,base_end_date):
         columns = ['close','open','high','low']
-        df = df[columns]
-        start_date = base_start_date
-        end_date = base_end_date
-        df_Fibon = df[start_date:end_date]
+        df = dataset[columns]
+        base_start_date = datetime.datetime.strptime(base_start_date,'%Y-%m-%d').date()
+        base_end_date = datetime.datetime.strptime(base_end_date,'%Y-%m-%d').date()
+        df_Fibon = dateset[base_start_date:base_end_date]
 
         maximum_price = df_Fibon['close'].max()
         minimum_price = df_Fibon['close'].min()
