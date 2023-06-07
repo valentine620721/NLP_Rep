@@ -35,6 +35,16 @@ select ID as id, DATETIME as datetime,STOCK_ID as stock_id, PATH as path, SUMMAR
 from NEWS where STOCK_ID = :stockid and DATETIME between TO_DATE(:startdate,'YYYY-MM-DD') and TO_DATE(:enddate,'YYYY-MM-DD')
 '''
 
+def get_dataset(stockid,stockname):
+  return getOracleDataset.getOracleDataset(dbhostname,dbport,dbservicename,dbuser,dbpass,sqlstr_stockdata,stockid,stockname)
+
+def convert_date(dataset,date_column_name,format = '%Y-%m-%d'):
+  dataset[data_column_name] = dataset[date_column_name].apply(lambda x: x.strftime(format))
+  return dataset
+
+def get_news_dataset(stockid,startdate,enddate):
+  return getOracleDataset.getNews(dbhostname,dbport,sbservicename,dbuser,dbpass,sqlstr_news,stockid,startdate,enddate)
+
 @app.route("/history")
 def get_history():
   keyword = request.args.get('kkeyword')
