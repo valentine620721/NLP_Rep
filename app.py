@@ -25,4 +25,33 @@ dbservicename = r'orcl'
 dbuser = r'eason'
 dbpass = r'password'
 
-sqlstr_
+sqlstr_stockdata  = r'''
+select date as datetime, stock_id as stockid,name as stockname,close as close, open as open, high as high, low as low,vol as vol
+from v_stockdata where stock_id = :stockid or name =:stockname
+'''
+
+sqlstr_news = r'''
+select ID as id, DATETIME as datetime,STOCK_ID as stock_id, PATH as path, SUMMARY as summary, SENT as sent
+from NEWS where STOCK_ID = :stockid and DATETIME between TO_DATE(:startdate,'YYYY-MM-DD') and TO_DATE(:enddate,'YYYY-MM-DD')
+'''
+
+@app.route("/history")
+def get_history():
+  keyword = request.args.get('kkeyword')
+  if (keyword is None):
+    return 'keyword is required',400
+  
+  dataset = get_dataset(keyword,keyword)
+  if (dataset is None or len(dataset)==0):
+    return 'data not found',404
+  #轉換日期格式
+  convert_date(dataset,'datetime')
+  
+
+
+
+
+
+
+
+
