@@ -56,6 +56,33 @@ def get_history():
     return 'data not found',404
   #轉換日期格式
   convert_date(dataset,'datetime')
+  return dataset.to_dict(orient = 'records')
+
+@app.route("/similar")
+def run_similar():
+  stockid = request.args.get('stockid')
+  model = request.args.get('model')
+  startdate = request.args.get('startdate')
+  enddate = request.args.get('enddate')
+  if (stockis is None or model is None or startdate is None or enddate is None):
+    return 'params is required',400
+  if (model != 'ALL' and model != 'DTW' and model != 'CORR' and model != 'AHASH'):
+    return 'model is invalid',400
+  
+  dataset = get_dataset(stockid,None)
+  if (dataset is None or len(dataset) == 0):
+    return 'data not found',400
+  
+  request = []
+  if (model == 'ALL' or model == 'DTW'):
+    results.extend(DTWSimilar.getDTWrank(dataset,startdate,enddate).to_dict(orients = 'records'))
+  if (model == 'ALL' or model == 'CORR'):
+    results.extend(CorrSimilar.getCorrrank(dataset,startdate,enddate).to_dict(orients = 'records'))
+  if (model == 'ALL' or model == 'AHASH'):
+    results.extend(aHashSimilar.getaHashrank(dataset,startdate,enddate).to_dict(orients = 'records'))
+  return results
+
+
   
 
 
